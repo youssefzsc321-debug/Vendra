@@ -13,6 +13,11 @@ namespace Vendra.Infrastructure.Specifications
     {
         public Expression<Func<T, bool>> Criteria { get ; set ; }
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
+        public Expression<Func<T, object>> OrderBy { get ; set ; }
+        public Expression<Func<T, object>> OrderByDesc { get ; set ; }
+        public int Skip { get; set; }
+        public int Take { get; set; }
+        public bool IsPaginationEnabled { get ; set ; }
 
         public BaseSpecification()
         {
@@ -25,6 +30,23 @@ namespace Vendra.Infrastructure.Specifications
         public void AddInclude(Expression<Func<T, object>> include)
         {
             Includes.Add(include); 
+        }
+
+        public void AddOrderBy(Expression<Func<T, object>> orderBy)
+        {
+            OrderBy= orderBy;    
+        }
+        public void AddOrderByDesc(Expression<Func<T, object>> orderBy)
+        {
+            OrderByDesc = orderBy;    
+        }
+
+        public void ApplayPagination(int skip,int take) 
+        {
+            Skip= skip;
+            Take= take;
+            IsPaginationEnabled= true;
+            
         }
     }
 }

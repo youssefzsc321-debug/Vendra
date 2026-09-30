@@ -10,24 +10,24 @@ namespace Vendra.API.Controllers
     {
         protected IActionResult Success<T>(T Data, string? message = null)
         {
-            var response = new APIResponse<T>(StatusCode: 200, IsSuccess: true, Data: Data, ErrorMessage: message);
+            var response = new APIResponse<T>(statusCode: 200, isSuccess: true, data: Data, errorMessage: message);
             return Ok(response);
         }
 
         protected IActionResult Created<T>(string actionName, object value, T Data, string? message = null)
         {
-            var response = new APIResponse<T>(StatusCode: 201, IsSuccess: true, Data: Data, ErrorMessage: message);
+            var response = new APIResponse<T>(statusCode: 201, isSuccess: true, data: Data, errorMessage: message);
             return CreatedAtAction(actionName, value, response);
         }
         protected IActionResult BadRequestResponse(string message, List<string>? errors = null)
         {
-            var response = new APIResponse<object>(StatusCode: 400, IsSuccess: false, ErrorMessage: message, Errors: errors);
+            var response = new APIResponse<object>(statusCode: 400, isSuccess: false, errorMessage: message, errors: errors);
             return BadRequest(response);
 
         }
         protected IActionResult NotFoundResponse(string message)
         {
-            var response = new APIResponse<object>(StatusCode: 404, IsSuccess: false, ErrorMessage: message);
+            var response = new APIResponse<object>(statusCode: 404, isSuccess: false, errorMessage: message);
             return NotFound(response);
 
         }

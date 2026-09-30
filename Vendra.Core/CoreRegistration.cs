@@ -22,7 +22,8 @@ namespace Vendra.Core
                 options.UseSqlServer(connectionString));
 
             services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetExecutingAssembly()));
-            return services;
+
+            services.AddTransient<Helpers.ProductUrlResolver>(); return services;
         }
     }
 }

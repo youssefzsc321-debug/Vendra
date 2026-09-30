@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 using Vendra.Core.Dtos.Products;
 using Vendra.Core.Enities;
 
-namespace Vendra.Core.Mapping
+namespace Vendra.Core.Helpers.Mapping
 {
     public class ProductMapping:Profile
     {
         public ProductMapping()
         {
-            CreateMap<Product, GetAllDto>()
+            CreateMap<Product, GetProductlDto>()
                 .ForMember(dest=>dest.BrandName,opt=>opt.MapFrom(src=>src.ProductBrand.Name))
-                .ForMember(dest=>dest.TypeName,opt=>opt.MapFrom(src=>src.ProductType.Name));
+                .ForMember(dest=>dest.TypeName,opt=>opt.MapFrom(src=>src.ProductType.Name))
+                .ForMember(dest =>dest.Image, opt => opt.MapFrom<ProductUrlResolver>());
+
+            CreateMap<ProductBrand, GetBrands>();
+            CreateMap<ProductType, GetTypes>();
         }
     }
 }

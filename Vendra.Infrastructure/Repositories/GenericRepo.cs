@@ -22,6 +22,13 @@ namespace Vendra.Infrastructure.Repositories
             _dbSet = _context.Set<T>();
         }
 
+        public async Task<int> CountAsyncSpec(ISpecification<T> spec)
+        {
+            return await ApplySepcification(spec).CountAsync();
+        }
+
+      
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();

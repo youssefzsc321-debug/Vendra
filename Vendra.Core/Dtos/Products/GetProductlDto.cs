@@ -7,7 +7,7 @@ using Vendra.Core.Enities;
 
 namespace Vendra.Core.Dtos.Products
 {
-    public class GetAllDto
+    public class GetProductlDto
     {
         public string Name { get; set; }
         public string Description { get; set; }

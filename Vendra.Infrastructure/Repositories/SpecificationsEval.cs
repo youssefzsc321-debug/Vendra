@@ -12,19 +12,28 @@ namespace Vendra.Infrastructure.Repositories
 {
     public class SpecificationsEval<TEnity> where TEnity : BaseEnitiy
     {
-        public static IQueryable<TEnity> GetQuery(IQueryable<TEnity> inputQuery, ISpecification<TEnity>spec)
+        public static IQueryable<TEnity> GetQuery(IQueryable<TEnity> inputQuery, ISpecification<TEnity> spec)
         {
             var query = inputQuery.AsQueryable();
-            if(spec.Criteria != null)
+            if (spec.Criteria != null)
             {
-                query=query.Where(spec.Criteria);
+                query = query.Where(spec.Criteria);
             }
 
-            if(spec.Includes!=null&&spec.Includes.Any())
+            if (spec.OrderBy != null) 
+                query = query.OrderBy(spec.OrderBy);
+
+            if(spec.OrderByDesc != null)
+                query=query.OrderByDescending(spec.OrderByDesc);
+
+            if (spec.IsPaginationEnabled)
+                query = query.Skip(spec.Skip).Take(spec.Take);
+
+            if (spec.Includes != null && spec.Includes.Any())
             {
-                foreach(var include in spec.Includes)
+                foreach (var include in spec.Includes)
                 {
-                    query=query.Include(include);
+                    query = query.Include(include);
                 }
             }
             return query;
