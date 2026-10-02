@@ -13,10 +13,24 @@ namespace Vendra.Core.Dtos.Products
         public int? TypeId { get; set; }
         public int? BrandId { get; set; }
         private const int MaxPageSize = 50;
-        public int PageIndex { get; set; } = 10;
+        public int PageIndex { get; set; } = 1;
         private int _take = 10;
 
-        public int Take { get => _take; set => _take = (value > MaxPageSize ? MaxPageSize : value); }
+        public int Take 
+        { 
+            get => _take; 
+            set => _take = (value > MaxPageSize ? MaxPageSize : value);
+        }
+
+        private string? _search;
+
+        public string? Search
+        {
+            get => _search; 
+            set => _search = value.ToLower(); 
+        }
+
+    
 
 
     }

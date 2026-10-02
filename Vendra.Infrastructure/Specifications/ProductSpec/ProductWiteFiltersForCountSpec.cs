@@ -11,7 +11,13 @@ namespace Vendra.Infrastructure.Specifications.ProductSpec
     public class ProductWiteFiltersForCountSpec:BaseSpecification<Product>
     {
         public ProductWiteFiltersForCountSpec(ProductSpecParam specParams) :
-            base(p => (!specParams.BrandId.HasValue || specParams.BrandId == p.ProductBrandId) && (!specParams.TypeId.HasValue || specParams.TypeId == p.ProductTypeId))
+             base
+            (
+                p => ((string.IsNullOrEmpty(specParams.Search) || p.Name.ToLower().Contains(specParams.Search)) &&
+                !specParams.BrandId.HasValue || specParams.BrandId == p.ProductBrandId) &&
+             (!specParams.TypeId.HasValue || specParams.TypeId == p.ProductTypeId)
+
+            )
         {
             
         }

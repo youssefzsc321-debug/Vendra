@@ -20,6 +20,7 @@ namespace Vendra.Infrastructure
 
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped<IUnitOfWorkRepo, UnitOfWorkRepo>();
+            services.AddScoped<IBasketRepo, BasketRepo>();
             
             return services;
 

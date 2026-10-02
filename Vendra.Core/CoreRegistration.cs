@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Vendra.Core.Data;
+using Vendra.Core.Interfaces;
 
 namespace Vendra.Core
 {
@@ -24,6 +26,14 @@ namespace Vendra.Core
             services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetExecutingAssembly()));
 
             services.AddTransient<Helpers.ProductUrlResolver>(); return services;
+
+            services.AddSingleton<IConnectionMultiplexer>(s =>
+            {
+                var connection = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(connection);
+            });
+
+        
         }
     }
 }

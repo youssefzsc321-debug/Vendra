@@ -10,8 +10,14 @@ namespace Vendra.Infrastructure.Specifications.ProductSpec
 {
     public class ProductWithTypeAndBrand : BaseSpecification<Product>
     {
-        public ProductWithTypeAndBrand(ProductSpecParam specParams):
-            base(p=>(!specParams.BrandId.HasValue||specParams.BrandId==p.ProductBrandId)&&(!specParams.TypeId.HasValue||specParams.TypeId==p.ProductTypeId))
+        public ProductWithTypeAndBrand(ProductSpecParam specParams) :
+            base
+            (
+                p => ((string.IsNullOrEmpty(specParams.Search)||p.Name.ToLower().Contains(specParams.Search))&&
+                !specParams.BrandId.HasValue || specParams.BrandId == p.ProductBrandId) &&
+             (!specParams.TypeId.HasValue || specParams.TypeId == p.ProductTypeId)
+                
+            )
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
@@ -31,11 +37,11 @@ namespace Vendra.Infrastructure.Specifications.ProductSpec
                         AddOrderBy(p => p.Name);
                         break;
                 }
-                
+
 
 
             }
-            else 
+            else
                 AddOrderBy(p => p.Name);
         }
 

@@ -20,5 +20,7 @@ namespace Vendra.Core.Interfaces
         public int Take { get; set; }
         public bool IsPaginationEnabled { get; set; }
 
+        
+
     }
 }

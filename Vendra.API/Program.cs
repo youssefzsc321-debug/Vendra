@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Vendra.API.Middleware;
 using Vendra.Core;
 using Vendra.Core.Common;
@@ -17,6 +18,12 @@ namespace Vendra.API
             // Add services to the container.
             builder.Services.CoreConfiguration(builder.Configuration);
             builder.Services.InfrastructureConfiguration();
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
+                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -24,23 +31,23 @@ namespace Vendra.API
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
-                 options.InvalidModelStateResponseFactory = actionContext =>
-                 {
-                     var errors = actionContext.ModelState
-                         .Where(e => e.Value.Errors.Count > 0)
-                         .SelectMany(x => x.Value.Errors)
-                         .Select(x => x.ErrorMessage)
-                         .ToList();
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage)
+                        .ToList();
 
-                     var response = new APIResponse<object>(
-                         statusCode: 400,
-                         isSuccess: false,
-                         errorMessage: "Validation Failed",
-                         errors: errors
-                     );
+                    var response = new APIResponse<object>(
+                        statusCode: 400,
+                        isSuccess: false,
+                        errorMessage: "Validation Failed",
+                        errors: errors
+                    );
 
-                     return new BadRequestObjectResult(response);
-                 };
+                    return new BadRequestObjectResult(response);
+                };
             });
 
             var app = builder.Build();
@@ -70,7 +77,6 @@ namespace Vendra.API
             }
             //end calling seed data
 
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -83,7 +89,6 @@ namespace Vendra.API
             app.UseStaticFiles();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
