@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using Vendra.API.Extentions;
 using Vendra.API.Middleware;
 using Vendra.Core;
 using Vendra.Core.Common;
 using Vendra.Core.Data;
+using Vendra.Core.Enities.Identity;
 using Vendra.Core.Seeds;
 using Vendra.Infrastructure;
 namespace Vendra.API
@@ -18,6 +21,8 @@ namespace Vendra.API
             // Add services to the container.
             builder.Services.CoreConfiguration(builder.Configuration);
             builder.Services.InfrastructureConfiguration();
+
+            builder.Services.AddIdentityService();
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
@@ -61,13 +66,17 @@ namespace Vendra.API
                 try
                 {
                     var context = services.GetRequiredService<VendraContext>();
-
                     await context.Database.MigrateAsync();
 
                     await ProductBrandSeed.SeedProductBrand(context);
                     await ProductTypeSeed.SeedProductType(context);
-
                     await ProductSeed.SeedProductAsync(context);
+
+                    var identityContext = services.GetRequiredService<AppIdentityContext>();
+                    await identityContext.Database.MigrateAsync();
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    await UserSeed.SeedUsersAsync(userManager);
                 }
                 catch (Exception ex)
                 {
@@ -88,6 +97,7 @@ namespace Vendra.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

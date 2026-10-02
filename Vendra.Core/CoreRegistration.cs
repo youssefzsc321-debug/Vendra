@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -9,7 +10,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Vendra.Core.Data;
+using Vendra.Core.Enities.Identity;
 using Vendra.Core.Interfaces;
+
 
 namespace Vendra.Core
 {
@@ -23,9 +26,17 @@ namespace Vendra.Core
             services.AddDbContext<VendraContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            var connectionStringIdentity = configuration.GetConnectionString("IdentityConnection")
+                ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
+
+            services.AddDbContext<AppIdentityContext>(options =>
+                options.UseSqlServer(connectionStringIdentity));
+
+            
+
             services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetExecutingAssembly()));
 
-            services.AddTransient<Helpers.ProductUrlResolver>(); return services;
+            services.AddTransient<Helpers.ProductUrlResolver>(); 
 
             services.AddSingleton<IConnectionMultiplexer>(s =>
             {
@@ -33,7 +44,9 @@ namespace Vendra.Core
                 return ConnectionMultiplexer.Connect(connection);
             });
 
-        
+            return services;
+
+
         }
     }
 }

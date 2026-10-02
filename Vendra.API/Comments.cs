@@ -1,14 +1,19 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text.Json;
 using Vendra.API.Controllers;
 using Vendra.Core.Common;
 using Vendra.Core.Dtos.Products;
 using Vendra.Core.Enities;
+using Vendra.Core.Enities.Identity;
 using Vendra.Core.Helpers;
 using Vendra.Core.Interfaces;
 using Vendra.Infrastructure.Repositories;
@@ -18,10 +23,11 @@ namespace Vendra.API
 {
     public class Comments
     {
-       
-
-
-
+        
 
     }
+
+
+
 }
+
