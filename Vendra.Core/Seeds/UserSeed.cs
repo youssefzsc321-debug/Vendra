@@ -27,7 +27,7 @@ namespace Vendra.Core.Seeds
                         Street = "123 Main St"
                     }
                 };
-                await userManager.CreateAsync(user);
+                await userManager.CreateAsync(user,"753951420Tt#");
             }
         }
     }

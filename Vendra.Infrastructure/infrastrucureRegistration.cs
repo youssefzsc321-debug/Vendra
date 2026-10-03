@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Vendra.Core.Data;
 using Vendra.Core.Interfaces;
+using Vendra.Infrastructure.IdentityServices.Implementation;
+using Vendra.Infrastructure.IdentityServices.Interfaces;
 using Vendra.Infrastructure.Repositories;
 
 namespace Vendra.Infrastructure
@@ -21,6 +23,7 @@ namespace Vendra.Infrastructure
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped<IUnitOfWorkRepo, UnitOfWorkRepo>();
             services.AddScoped<IBasketRepo, BasketRepo>();
+            services.AddScoped<ITokenService, TokenService>();
             
             return services;
 

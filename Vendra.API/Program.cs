@@ -22,7 +22,7 @@ namespace Vendra.API
             builder.Services.CoreConfiguration(builder.Configuration);
             builder.Services.InfrastructureConfiguration();
 
-            builder.Services.AddIdentityService();
+            builder.Services.AddIdentityService(builder.Configuration);
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));

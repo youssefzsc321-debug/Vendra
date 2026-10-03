@@ -13,6 +13,7 @@ namespace Vendra.API.Controllers
             var response = new APIResponse<T>(statusCode: 200, isSuccess: true, data: Data, errorMessage: message);
             return Ok(response);
         }
+        
 
         protected IActionResult Created<T>(string actionName, object value, T Data, string? message = null)
         {
@@ -24,6 +25,11 @@ namespace Vendra.API.Controllers
             var response = new APIResponse<object>(statusCode: 400, isSuccess: false, errorMessage: message, errors: errors);
             return BadRequest(response);
 
+        }
+        protected IActionResult UnauthorizedResponse(string? message=null)
+        {
+            var response = new APIResponse<object>(statusCode: 401, isSuccess: false, errorMessage: message);
+            return Unauthorized(response);
         }
         protected IActionResult NotFoundResponse(string message)
         {
