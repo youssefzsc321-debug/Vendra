@@ -14,9 +14,9 @@ namespace Vendra.Core.Enities
 
         public int Quantity { get; set; }
         public string ProductImage { get; set; }
-        public string Brand { get; set; }
+        public int Brand { get; set; }
 
-        public string Type { get; set; }
+        public int Type { get; set; }
 
     }
 }

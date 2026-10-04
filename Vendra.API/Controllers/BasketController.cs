@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Vendra.Core.Dtos.Products;
 using Vendra.Core.Enities;
 using Vendra.Core.Interfaces;
 
@@ -11,9 +13,13 @@ namespace Vendra.API.Controllers
     public class BasketController : BaseController
     {
         private readonly IBasketRepo _basketRepo;
-        public BasketController(IBasketRepo _basketRepo)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWorkRepo _unitOfWorkRepo;
+        public BasketController(IBasketRepo _basketRepo, IMapper mapper, IUnitOfWorkRepo unitOfWorkRepo)
         {
             this._basketRepo = _basketRepo;
+            _mapper = mapper;
+            _unitOfWorkRepo = unitOfWorkRepo;
         }
 
         [HttpGet("Get-Basket/{id}")]
@@ -25,10 +31,23 @@ namespace Vendra.API.Controllers
         }
 
         [HttpPost("Update-Basket")]
-        public async Task<IActionResult> UpdateBasket(CustomerBasket basket)
+        public async Task<IActionResult> UpdateBasket(CustomerBasketDto model)
         {
+            var basket=_mapper.Map<CustomerBasket>(model);
+            foreach(var item in basket.Items)
+            {
+                var product = await _unitOfWorkRepo.Products.GetByIdAsync(item.Id);
+                if(product == null) return BadRequestResponse($"Product with ID {item.Id} was not found.");
+                item.Price = product.Price;
+                item.ProductName = product.Name;
+                item.ProductImage = product.Image;
+                item.Brand = product.ProductBrandId;
+                item.Type = product.ProductTypeId;
+            }
+
             var customerBasket=await _basketRepo.UpdateCustomerBasket(basket);
             if (customerBasket == null) return BadRequestResponse("A problem has occurred with updating the basket");
+
             return Success(customerBasket, "Update successful.!");
         }
 

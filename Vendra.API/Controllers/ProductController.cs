@@ -14,7 +14,7 @@ namespace Vendra.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+ 
     public class ProductController : BaseController
     {
         private readonly IUnitOfWorkRepo _unitOfWorkRepo;

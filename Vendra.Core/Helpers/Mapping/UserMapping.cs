@@ -22,6 +22,8 @@ namespace Vendra.Core.Helpers.Mapping
                     FirstName = src.FirstName,
                     LastName = src.LastName,
                 }));
+
+            CreateMap<Address, AddressDto>().ReverseMap();
                     
         }
     }

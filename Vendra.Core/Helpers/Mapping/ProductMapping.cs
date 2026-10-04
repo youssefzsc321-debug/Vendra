@@ -20,6 +20,9 @@ namespace Vendra.Core.Helpers.Mapping
 
             CreateMap<ProductBrand, GetBrands>();
             CreateMap<ProductType, GetTypes>();
+
+            CreateMap<CustomerBasketDto, CustomerBasket>();
+            CreateMap<BasketItemDto, BasketItem>();
         }
     }
 }
