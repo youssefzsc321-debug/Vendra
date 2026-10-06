@@ -24,6 +24,7 @@ namespace Vendra.Infrastructure
             services.AddScoped<IUnitOfWorkRepo, UnitOfWorkRepo>();
             services.AddScoped<IBasketRepo, BasketRepo>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
             
             return services;
 

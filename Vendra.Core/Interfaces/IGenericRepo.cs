@@ -17,6 +17,10 @@ namespace Vendra.Core.Interfaces
         Task<T?> GetByIdWithSpec(ISpecification<T> spec);
         Task<IReadOnlyList<T>> GetAllAsyncWithSpec(ISpecification<T> spec);
         Task<int> CountAsyncSpec(ISpecification<T> spec);
+
+        Task AddAsync(T entity);
+        void Update(T entity);
+        void Delete(T entity);
         
         
     }
