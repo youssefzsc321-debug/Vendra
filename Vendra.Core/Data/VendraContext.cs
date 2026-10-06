@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Vendra.Core.Enities;
+using Vendra.Core.Enities.Order_Aggragtte;
 
 namespace Vendra.Core.Data
 {
@@ -19,13 +20,20 @@ namespace Vendra.Core.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(),
+                     t => t.Namespace != null && t.Namespace.StartsWith("Vendra.Core.Data.Config"));
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
 
         public DbSet<ProductBrand> productBrands { get; set; }
+
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Order> Orders { get; set;}
+        
+        
 
 
 

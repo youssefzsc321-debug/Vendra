@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,7 @@ using StackExchange.Redis;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +23,7 @@ using Vendra.Core.Dtos.Identity;
 using Vendra.Core.Dtos.Products;
 using Vendra.Core.Enities;
 using Vendra.Core.Enities.Identity;
+using Vendra.Core.Enities.Order_Aggragtte;
 using Vendra.Core.Helpers;
 using Vendra.Core.Interfaces;
 using Vendra.Infrastructure.IdentityServices.Implementation;
@@ -32,7 +35,7 @@ namespace Vendra.API
 {
     public class Comments
     {
-        
+       
 
 
     }

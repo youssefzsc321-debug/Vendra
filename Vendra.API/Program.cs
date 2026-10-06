@@ -7,6 +7,7 @@ using Vendra.API.Middleware;
 using Vendra.Core;
 using Vendra.Core.Common;
 using Vendra.Core.Data;
+using Vendra.Core.Data.Config;
 using Vendra.Core.Enities.Identity;
 using Vendra.Core.Seeds;
 using Vendra.Infrastructure;
@@ -71,6 +72,7 @@ namespace Vendra.API
                     await ProductBrandSeed.SeedProductBrand(context);
                     await ProductTypeSeed.SeedProductType(context);
                     await ProductSeed.SeedProductAsync(context);
+                    await DeliveryMethodSeed.SeedDeliveryMethod(context);
 
                     var identityContext = services.GetRequiredService<AppIdentityContext>();
                     await identityContext.Database.MigrateAsync();
