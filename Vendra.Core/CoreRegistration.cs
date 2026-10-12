@@ -37,6 +37,7 @@ namespace Vendra.Core
             services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetExecutingAssembly()));
 
             services.AddTransient<Helpers.ProductUrlResolver>(); 
+            services.AddTransient<Helpers.OrderItemUrlResolver>(); 
 
             services.AddSingleton<IConnectionMultiplexer>(s =>
             {

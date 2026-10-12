@@ -15,16 +15,19 @@ namespace Vendra.Core.Helpers.Mapping
     {
         public OrderMapping()
         {
+            CreateMap<Vendra.Core.Enities.Order_Aggragtte.Address, AddressDto>().ReverseMap();
+            CreateMap<DeliveryMethod, DeliveryMethodsDto>();
             CreateMap<Order, GetOrderDto>()
                 .ForMember(dest=>dest.DeliveryMethodName,opt=>opt.MapFrom(src=>src.DeliveryMethod.ShortName))
                 .ForMember(dest=>dest.ShippingPrice,opt=>opt.MapFrom(src=>src.DeliveryMethod.Cost))
-                ;
+                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
+            ;
 
             CreateMap<OrderItem, OrderItemDto>()
-                .ForMember(dest=>dest.ProductName,opt=>opt.MapFrom(src=>src.ProductItemOrder.ProductName))
-                .ForMember(dest=>dest.ProductId,opt=>opt.MapFrom(src=>src.ProductItemOrder.ProductId))
-                .ForMember(dest=>dest.ProductImage,opt=>opt.MapFrom(src=>src.ProductItemOrder.ProductImage));
-            CreateMap<Vendra.Core.Enities.Order_Aggragtte.Address, AddressDto>().ReverseMap();
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductItemOrder.ProductName))
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductItemOrder.ProductId))
+                //.ForMember(dest => dest.ProductImage, opt => opt.MapFrom(src => src.ProductItemOrder.ProductImage));
+                .ForMember(dest => dest.ProductImage, opt => opt.MapFrom<OrderItemUrlResolver>());
         }
     }
 }

@@ -68,8 +68,9 @@ namespace Vendra.Core.Data.Migrations
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("PayMentIntentId")
-                        .HasColumnType("int");
+                    b.Property<string>("PayMentIntentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()

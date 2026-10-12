@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vendra.Core.Enities.Order_Aggragtte;
 using Vendra.Core.Interfaces;
+using Vendra.Infrastructure.Specifications.Orders;
 
 namespace Vendra.Infrastructure.Repositories
 {
@@ -12,10 +14,12 @@ namespace Vendra.Infrastructure.Repositories
     {
         private readonly IUnitOfWorkRepo _unitOfWorkRepo;
         private readonly IBasketRepo _basketRepo;
-        public OrderService(IUnitOfWorkRepo unitOfWorkRepo, IBasketRepo basketRepo)
+        private readonly IPaymentService _paymentService;
+        public OrderService(IUnitOfWorkRepo unitOfWorkRepo, IBasketRepo basketRepo, IPaymentService paymentService)
         {
             _unitOfWorkRepo = unitOfWorkRepo;
             _basketRepo = basketRepo;
+            _paymentService = paymentService;
         }
         public async Task<Order> CreateOrderAsync(string buyerEmail, string busketId, int deliveryMethodId, Address address)
         {
@@ -38,30 +42,43 @@ namespace Vendra.Infrastructure.Repositories
             if(deliveryMethd==null) throw new Exception("Invalid delivery method");
             // 4.Calculate SubTotal
             var subTotal=orderItems.Sum(itme=>itme.Price*itme.Qunatity);
-            
-            // 5.Create Order
-            var order=new Order(buyerEmail,deliveryMethd,address,orderItems,subTotal);
+
+            // 5.check if this basket has a previous paymentIntentId 
+            var spec = new OrderWithItmesByPaymentIntentIdSpec(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWorkRepo.Orders.GetByIdWithSpec(spec);
+            if(existingOrder!=null)
+            {
+                 _unitOfWorkRepo.Orders.Delete(existingOrder);
+                await _paymentService.CreateOrUpdatePaymentIntent(busketId);
+            }
+            // 6.Create Order
+            var order=new Order(buyerEmail,deliveryMethd,address,orderItems,subTotal,basket.PaymentIntentId!);
             await _unitOfWorkRepo.Orders.AddAsync(order);
 
-            // 6.Save To Database
+            // 7.Save To Database
             var res=await _unitOfWorkRepo.SaveChangesAsync();
             if (res <= 0) return null;
             return order;
         }
 
-        public Task<IReadOnlyList<DeliveryMethod>?> GetDeliveryMethodsAsync()
+        public async Task<IReadOnlyList<DeliveryMethod>?> GetDeliveryMethodsAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWorkRepo.DeliveryMethods.GetAllAsync();
         }
 
-        public Task<IReadOnlyList<Order>?> GetOrderesAsync(string buyerEmail)
+
+        public async Task<IReadOnlyList<Order>?> GetOrderesAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            var spec=new OrderWithItemAndDeliveryMethodSpec(buyerEmail);
+            var orders=await _unitOfWorkRepo.Orders.GetAllAsyncWithSpec(spec);
+            return orders;
         }
 
-        public Task<Order?> GetOrderForUser(int orderId, string buyerEmail)
+        public async Task<Order?> GetOrderForUserAsync(int orderId, string buyerEmail)
         {
-            throw new NotImplementedException();
+            var spec = new OrderWithItemAndDeliveryMethodSpec(buyerEmail, orderId);
+            var order=await _unitOfWorkRepo.Orders.GetByIdWithSpec(spec);
+            return order;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Vendra.Core.Interfaces
         
         Task<Order> CreateOrderAsync(string buyerEmail,string busketId ,int deliveryMethodId, Address address);
         Task<IReadOnlyList<Order>?> GetOrderesAsync(string buyerEmail);
-        Task<Order?> GetOrderForUser(int orderId, string buyerEmail);
+        Task<Order?> GetOrderForUserAsync(int orderId, string buyerEmail);
 
         Task<IReadOnlyList<DeliveryMethod>?> GetDeliveryMethodsAsync();
     }

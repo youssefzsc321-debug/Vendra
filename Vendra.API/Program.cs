@@ -11,6 +11,7 @@ using Vendra.Core.Data.Config;
 using Vendra.Core.Enities.Identity;
 using Vendra.Core.Seeds;
 using Vendra.Infrastructure;
+
 namespace Vendra.API
 {
     public class Program
@@ -28,6 +29,16 @@ namespace Vendra.API
             builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
                 return ConnectionMultiplexer.Connect(configuration);
+            });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowAnyOrigin();
+                });
             });
 
             builder.Services.AddControllers();
@@ -58,7 +69,7 @@ namespace Vendra.API
 
             var app = builder.Build();
 
-            //Begin calling seed data
+            // Begin calling seed data
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -86,7 +97,7 @@ namespace Vendra.API
                     logger.LogError(ex, "An error occurred during data seeding.");
                 }
             }
-            //end calling seed data
+            // End calling seed data
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -94,6 +105,9 @@ namespace Vendra.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowAllPolicy");
+
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();

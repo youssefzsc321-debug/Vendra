@@ -14,5 +14,8 @@ namespace Vendra.Core.Dtos.Products
         public string Id { get; set; }
         [Required(ErrorMessage = "Basket must contain items")]
         public ICollection<BasketItemDto> Items { get; set; } = new List<BasketItemDto>();
+        public int? DeliveryMethodId { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
     }
 }
