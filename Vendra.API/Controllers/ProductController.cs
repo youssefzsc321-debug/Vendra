@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vendra.Core.Common;
 using Vendra.Core.Dtos.Products;
 using Vendra.Core.Enities;
+using Vendra.Core.Helpers;
 using Vendra.Core.Interfaces;
 using Vendra.Infrastructure.Specifications;
 using Vendra.Infrastructure.Specifications.ProductSpec;
@@ -25,9 +26,10 @@ namespace Vendra.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Get-All-Products")]
         [ProducesResponseType(typeof(APIResponse<IReadOnlyList<GetProductlDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(APIResponse<object>), StatusCodes.Status500InternalServerError)]
+        [CachedResponse(600)]
+        [HttpGet("Get-All-Products")]
 
         public async Task<IActionResult> GetAll([FromQuery]ProductSpecParam specParams)
         {
@@ -46,7 +48,7 @@ namespace Vendra.API.Controllers
             };
             return Success(paginatedData, "Success!");
         }
-
+        [CachedResponse(600)]
         [HttpGet("Get-Product/{id}")]
         [ProducesResponseType(typeof(APIResponse<GetProductlDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(APIResponse<object>), StatusCodes.Status400BadRequest)]
@@ -60,7 +62,7 @@ namespace Vendra.API.Controllers
 
             return Success<GetProductlDto>(modelDto,"Success");
         }
-
+        [CachedResponse(600)]
         [HttpGet("Brands")]
         [ProducesResponseType(typeof(APIResponse<IReadOnlyList<GetBrands>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(APIResponse<object>), StatusCodes.Status500InternalServerError)]
@@ -70,7 +72,7 @@ namespace Vendra.API.Controllers
             var modelDto = _mapper.Map<IReadOnlyList<GetBrands>>(brands);
             return Success(modelDto, "Success!");
         }
-
+        [CachedResponse(600)]
         [HttpGet("Types")]
         [ProducesResponseType(typeof(APIResponse<IReadOnlyList<GetBrands>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(APIResponse<object>), StatusCodes.Status500InternalServerError)]
