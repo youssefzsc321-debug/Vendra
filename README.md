@@ -42,7 +42,7 @@ A full-featured e-commerce backend built with **ASP.NET Core 8**. It covers the 
 **Developer experience**
 - 🖼️ **Image pipeline:** upload validation (type + size), unique file names, automatic **thumbnail generation** (ImageSharp) and cleanup of old files on update/delete; **AutoMapper** URL resolvers return absolute image URLs.
 - 🌱 **Automatic migrations and data seeding** on startup (brands, types, 18 products, delivery methods, roles, admin).
-- 📚 **Swagger UI**, typed `ProducesResponseType` annotations on catalog endpoints, and a `.http` file for quick testing.
+- 📚 **Swagger UI**, typed `ProducesResponseType` annotations on catalog endpoints, a `.http` file, and a ready-to-import **Postman collection** with an environment file.
 
 ---
 
@@ -65,6 +65,8 @@ Vendra.sln
 ├── Vendra.API              # Controllers, middleware, DI & JWT setup, Swagger
 ├── Vendra.Core             # Entities, DTOs, interfaces, AutoMapper profiles, EF configs, seeds
 └── Vendra.Infrastructure   # Generic repo, Unit of Work, specifications, order/payment/basket/image services
+
+docs/                       # Postman collection and environment
 ```
 
 ---
@@ -139,7 +141,7 @@ Interactive docs are available through **Swagger UI** when running in Developmen
 | Payments | Stripe.net |
 | Mapping | AutoMapper |
 | Images | SixLabors ImageSharp |
-| API docs | Swagger / Swashbuckle |
+| API docs & testing | Swagger / Swashbuckle · Postman |
 
 ---
 
@@ -186,9 +188,16 @@ stripe listen --forward-to https://localhost:7083/api/Payments/webhook --skip-ve
 ```
 Copy the `whsec_...` it prints into the `StripeSettings:WhSecret` secret and pay with the Stripe test card `4242 4242 4242 4242` (any future expiry, any CVC).
 
-### Authenticating in Swagger / Postman
+### Authenticating in Swagger
 1. `POST /api/Account/Login` and copy the `token` from the response.
-2. Send it on protected requests as `Authorization: Bearer <token>`.
+2. Click **Authorize** in Swagger UI and paste the token, or send it as `Authorization: Bearer <token>`.
+
+### Postman collection
+A ready-made collection and environment are in the [`docs/`](docs) folder:
+
+1. Import `Vendra.postman_collection.json` and `Vendra.postman_environment.json`.
+2. Select the **Vendra** environment and set `baseUrl` (e.g. `https://localhost:7083`).
+3. Run **Account → Login** and put the returned `token` into the environment's `token` variable. Protected requests use `Bearer {{token}}`.
 
 ---
 
@@ -209,4 +218,4 @@ Copy the `whsec_...` it prints into the `StripeSettings:WhSecret` secret and pay
 **Youssef Abuzaid** — .NET Backend Developer
 📧 youssefzsc321@gmail.com · 💼 [LinkedIn](https://www.linkedin.com/in/your-profile) · 🐙 [GitHub](https://github.com/youssefzsc321-debug)
 
-*Vendra is my first full REST API project, built to practice layered design, authentication, caching and real payment integration. Feedback is welcome.*
+*Vendra is a hands-on project exploring layered design, authentication, caching and real payment integration. Feedback is welcome.*
