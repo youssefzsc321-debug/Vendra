@@ -216,6 +216,6 @@ A ready-made collection and environment are in the [`docs/`](docs) folder:
 ## 👤 Author
 
 **Youssef Abuzaid** — .NET Backend Developer
-📧 youssefzsc321@gmail.com · 💼 [LinkedIn](https://www.linkedin.com/in/your-profile) · 🐙 [GitHub](https://github.com/youssefzsc321-debug)
+📧 youssefzsc321@gmail.com · 💼 [LinkedIn]([https://www.linkedin.com/in/your-profile](https://www.linkedin.com/in/youssef-abuzaid-58b8a2379)) · 🐙 [GitHub](https://github.com/youssefzsc321-debug)
 
 *Vendra is a hands-on project exploring layered design, authentication, caching and real payment integration. Feedback is welcome.*
