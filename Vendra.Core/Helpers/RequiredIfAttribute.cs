@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Vendra.Core.Helpers
+{
+    public class RequiredIfAttribute : ValidationAttribute
+    {
+        private readonly string _dependentProperty;
+        private readonly object _targetValue;
+
+        public RequiredIfAttribute(string dependentProperty, object targetValue)
+        {
+            _dependentProperty = dependentProperty;
+            _targetValue = targetValue;
+        }
+
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            var property = validationContext.ObjectType.GetProperty(_dependentProperty);
+            if (property == null)
+            {
+                return new ValidationResult(ErrorMessage ?? $"Unknown property: {_dependentProperty}");
+            }
+
+            var dependentValue = property.GetValue(validationContext.ObjectInstance, null);
+
+            if (dependentValue != null && dependentValue.Equals(_targetValue))
+            {
+                if (value == null || (value is string str && string.IsNullOrWhiteSpace(str)))
+                {
+                    return new ValidationResult(ErrorMessage ?? "The Field is required.");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+}

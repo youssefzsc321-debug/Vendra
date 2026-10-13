@@ -90,6 +90,8 @@ namespace Vendra.API
 
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     await UserSeed.SeedUsersAsync(userManager);
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await AdminSeed.SeedAdminsAsync(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {

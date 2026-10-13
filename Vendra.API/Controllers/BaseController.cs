@@ -13,11 +13,17 @@ namespace Vendra.API.Controllers
             var response = new APIResponse<T>(statusCode: 200, isSuccess: true, data: Data, errorMessage: message);
             return Ok(response);
         }
-        
 
-        protected IActionResult Created<T>(string actionName, object value, T Data, string? message = null)
+
+        protected IActionResult Created<T>(string actionName, object value, T Data, string? controllerName = null, string? message = null)
         {
             var response = new APIResponse<T>(statusCode: 201, isSuccess: true, data: Data, errorMessage: message);
+
+            if (!string.IsNullOrEmpty(controllerName))
+            {
+                return CreatedAtAction(actionName, controllerName, value, response);
+            }
+
             return CreatedAtAction(actionName, value, response);
         }
         protected IActionResult BadRequestResponse(string message, List<string>? errors = null)

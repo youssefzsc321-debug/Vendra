@@ -10,7 +10,9 @@ namespace Vendra.Core.Common
     {
         public const string PasswordErrorMessage = "Password must be between 8 and 15 characters and contain at least one lowercase letter, one uppercase letter, and one numeric digit.";
         public const string ConfirmPass = "The password and confirmation password do not match.";
-        public const string maxValueError = "{0} Id must be greater than {1}";
-
+        public const string maxValueError = "{0} must be greater than {1}";
+        public const string MaxLength = "Max length is {1} characters";
+        public const string NotAllowedExtention = "Only .png , .jpg , .jepg Files are allowed!";
+        public const string MaxSize = "File Cannot be more than 2MB!";
     }
 }

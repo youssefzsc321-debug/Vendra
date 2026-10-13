@@ -23,6 +23,7 @@
 
                 CreateMap<CustomerBasketDto, CustomerBasket>();
                 CreateMap<BasketItemDto, BasketItem>();
+                CreateMap<PostPutProductDto, Product>().ReverseMap();
             }
         }
     }

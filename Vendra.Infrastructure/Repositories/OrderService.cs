@@ -52,7 +52,7 @@ namespace Vendra.Infrastructure.Repositories
                 await _paymentService.CreateOrUpdatePaymentIntent(busketId);
             }
             // 6.Create Order
-            var order=new Order(buyerEmail,deliveryMethd,address,orderItems,subTotal,basket.PaymentIntentId!);
+            var order=new Order(buyerEmail,deliveryMethd,address,orderItems,subTotal,basket.PaymentIntentId);
             await _unitOfWorkRepo.Orders.AddAsync(order);
 
             // 7.Save To Database

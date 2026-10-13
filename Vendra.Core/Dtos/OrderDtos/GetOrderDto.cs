@@ -22,7 +22,7 @@ namespace Vendra.Core.Dtos.OrderDtos
 
         public decimal ShippingPrice { get; set; }
 
-        public int PayMentIntentId { get; set; }
+        public string PayMentIntentId { get; set; }
 
         public decimal SubTotal { get; set; }
         public decimal Total {  get; set; }

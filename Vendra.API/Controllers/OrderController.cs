@@ -33,7 +33,7 @@ namespace Vendra.API.Controllers
             var order =await _orderService.CreateOrderAsync(email, model.BasketId, model.DeliveryMethodId, address);
             if (order == null) return BadRequestResponse("Problem creating order!");
             var orderDto=_mapper.Map<GetOrderDto>(order);
-            return Success(orderDto, "Succsee!");
+            return Created(actionName:nameof(GetOrderById),value:new { orderId =order.Id},Data:orderDto,message: "Order created successfully!");
             
         }
         [Authorize]

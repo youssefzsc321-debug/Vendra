@@ -24,6 +24,8 @@ namespace Vendra.Core.Helpers.Mapping
                 }));
 
             CreateMap<Address, AddressDto>().ReverseMap();
+
+            CreateMap<AppUser, UserDto>();
                     
         }
     }
